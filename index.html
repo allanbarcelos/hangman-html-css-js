@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>hangman</title>
+</head>
+
+<body>
+    <div class="game">
+        <div id="left" class="box">
+
+        </div>
+        <div id="right" class="box">
+            <div class="hangman-body" id="head"></div>
+            <div class="hangman-body" id="body"></div>
+            <div class="hangman-body" id="left-hand"></div>
+            <div class="hangman-body" id="right-hand"></div>
+            <div class="hangman-body" id="left-leg"></div>
+            <div class="hangman-body" id="right-leg"></div>
+        </div>
+    </div>
+    <div id="keyboard">
+
+    </div>
+
+    <script>
+
+        var keyboard = document.getElementById("keyboard");
+        let keys = [];
+
+        for (var i = 65; i <= 90; i++) {
+            keys.push(String.fromCharCode(i));
+        }
+
+        keys.forEach(key => {
+            var button = document.createElement('button');
+            button.textContent = key;
+            button.value = key;
+
+            button.addEventListener('click', function () {
+                checkAnswer(key);
+                button.disabled = true;
+
+            });
+
+
+            keyboard.append(button)
+        });
+
+
+        var data = [
+            {
+                "tip": "vehicle",
+                "word": "car"
+            },
+            {
+                "tip": "element",
+                "word": "oxygen"
+            },
+            {
+                "tip": "color",
+                "word": "blue"
+            },
+            {
+                "tip": "country",
+                "word": "Japan"
+            },
+            {
+                "tip": "instrument",
+                "word": "guitar"
+            },
+            {
+                "tip": "dessert",
+                "word": "ice cream"
+            },
+            {
+                "tip": "flower",
+                "word": "rose"
+            },
+            {
+                "tip": "sport",
+                "word": "soccer"
+            },
+            {
+                "tip": "clothing item",
+                "word": "hat"
+            },
+            {
+                "tip": "insect",
+                "word": "butterfly"
+            },
+            {
+                "tip": "body part",
+                "word": "eye"
+            },
+            {
+                "tip": "season",
+                "word": "autumn"
+            },
+            {
+                "tip": "job",
+                "word": "teacher"
+            },
+            {
+                "tip": "food",
+                "word": "pizza"
+            },
+            {
+                "tip": "planet",
+                "word": "Mars"
+            },
+            {
+                "tip": "emotion",
+                "word": "joy"
+            },
+            {
+                "tip": "drink",
+                "word": "coffee"
+            },
+            {
+                "tip": "bird",
+                "word": "eagle"
+            },
+            {
+                "tip": "body of water",
+                "word": "lake"
+            },
+            {
+                "tip": "instrument",
+                "word": "piano"
+            },
+            {
+                "tip": "fictional character",
+                "word": "Superman"
+            },
+            {
+                "tip": "vegetable",
+                "word": "broccoli"
+            },
+            {
+                "tip": "movie",
+                "word": "The Matrix"
+            },
+            {
+                "tip": "technology",
+                "word": "smartphone"
+            },
+            {
+                "tip": "city",
+                "word": "New York"
+            },
+            {
+                "tip": "animal",
+                "word": "elephant"
+            },
+            {
+                "tip": "book",
+                "word": "Harry Potter"
+            },
+            {
+                "tip": "number",
+                "word": "seven"
+            },
+            {
+                "tip": "vehicle",
+                "word": "motorcycle"
+            },
+            {
+                "tip": "music genre",
+                "word": "rock"
+            },
+            {
+                "tip": "weather phenomenon",
+                "word": "thunderstorm"
+            },
+            {
+                "tip": "clothing item",
+                "word": "sunglasses"
+            },
+            {
+                "tip": "fruit",
+                "word": "banana"
+            },
+            {
+                "tip": "big city",
+                "word": "Tokyo"
+            },
+            {
+                "tip": "domestic animal",
+                "word": "cat"
+            },
+            {
+                "tip": "planet",
+                "word": "Jupiter"
+            },
+            {
+                "tip": "emotion",
+                "word": "anger"
+            },
+            {
+                "tip": "drink",
+                "word": "tea"
+            },
+            {
+                "tip": "sport",
+                "word": "basketball"
+            },
+            {
+                "tip": "color",
+                "word": "green"
+            },
+            {
+                "tip": "food",
+                "word": "sushi"
+            },
+            {
+                "tip": "flower",
+                "word": "tulip"
+            },
+            {
+                "tip": "body of water",
+                "word": "ocean"
+            },
+            {
+                "tip": "city",
+                "word": "London"
+            },
+            {
+                "tip": "animal",
+                "word": "lion"
+            },
+            {
+                "tip": "book",
+                "word": "The Great Gatsby"
+            },
+            {
+                "tip": "number",
+                "word": "twelve"
+            }
+        ].map(x => ({ tip: x.tip.toUpperCase(), word: x.word.toUpperCase() }));
+
+        var left = document.getElementById("left");
+        var obj = data[Math.floor(Math.random() * data.length)];
+
+        var tip = document.createElement('p');
+        tip.innerHTML = obj['tip'];
+
+        left.append(tip)
+
+        obj['word'].split(" ").forEach(x => {
+
+            var line = document.createElement('div');
+            line.classList.add("line")
+            left.append(line)
+
+            for (let i = 0; i < x.length; i++) {
+                var div = document.createElement('div');
+                div.classList.add("box-letter");
+                // div.innerHTML = x[i];
+                line.append(div)
+            }
+        })
+
+
+        function checkAnswer(value) {
+            var p = obj['word'].indexOf(value);
+            if(p > -1){
+                var c = document.getElementsByClassName('box-letter');
+                c[p].innerHTML = value;
+            }else {
+                var h =  document.getElementsByClassName('hangman-body');
+
+                var i = h.length - 1;
+
+                for (let y = 0; y < h.length; y++) {
+                    if(h[y].classList.contains("red")){
+                        i = i -1;
+                    }                    
+                }
+   
+                h[i].classList.add('red');
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
