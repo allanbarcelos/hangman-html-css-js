@@ -266,11 +266,19 @@
 
 
         function checkAnswer(value) {
-            var p = obj['word'].indexOf(value);
-            if(p > -1){
-                var c = document.getElementsByClassName('box-letter');
-                c[p].innerHTML = value;
-            }else {
+            var p = obj['word'];
+
+            var _i = 0;
+            for (var _p of p) {
+                if(_p === value){
+                    var c = document.getElementsByClassName('box-letter');
+                    c[_i].innerHTML = value; 
+                }
+                _i++;
+            }
+
+            if(p.indexOf(value) === -1){
+                 
                 var h =  document.getElementsByClassName('hangman-body');
 
                 var i = h.length - 1;
