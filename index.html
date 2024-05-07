@@ -265,32 +265,48 @@
         })
 
 
+        var s = 0;
+        var f = 0;
         function checkAnswer(value) {
             var p = obj['word'];
 
+
             var _i = 0;
             for (var _p of p) {
-                if(_p === value){
+                if (_p === value) {
                     var c = document.getElementsByClassName('box-letter');
-                    c[_i].innerHTML = value; 
+                    c[_i].innerHTML = value;
+                    s++;
                 }
                 _i++;
             }
 
-            if(p.indexOf(value) === -1){
-                 
-                var h =  document.getElementsByClassName('hangman-body');
+            if (p.indexOf(value) === -1) {
+
+                var h = document.getElementsByClassName('hangman-body');
 
                 var i = h.length - 1;
 
                 for (let y = 0; y < h.length; y++) {
-                    if(h[y].classList.contains("red")){
-                        i = i -1;
-                    }                    
+                    if (h[y].classList.contains("red")) {
+                        i = i - 1;
+                    }
                 }
-   
+
                 h[i].classList.add('red');
+                f++;
+
+                if (h.length === f) {
+                    alert("Game over.");
+                    window.location.reload();
+                }
             }
+
+            if (p.length === s) {
+                alert("Congrats, you win!");
+                window.location.reload();
+            }
+
         }
 
 
